@@ -1,0 +1,22 @@
+name: ${project.name}
+main: ${project.groupId}.${project.artifactId}.Entry
+version: ${project.version}
+author: ghowden/Eluinhost
+database: false
+commands:
+  ask:
+    aliases: [helpop, ahask]
+    description: Get help from admins
+  ahlist:
+    aliases: [helpoplist]
+    description: List unanswered questions
+  reply:
+    aliases: [ahreply, helpopreply]
+    description: Reply to an asked question
+permissions:
+  uhc.adminhelp.admin:
+    description: Can handle messages on the admin side
+    default: op
+  uhc.adminhelp.use:
+    description: Allow to ask for help using the commands
+    default: true
