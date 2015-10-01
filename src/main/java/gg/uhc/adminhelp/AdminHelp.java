@@ -33,6 +33,7 @@ public class AdminHelp implements CommandExecutor, Listener {
     public static final String REPLY_FORMAT = ChatColor.AQUA + "Admin replies: %s";
     public static final String WAITING_ON_LOGIN = ChatColor.AQUA + "Player not online, will send at next login";
     public static final String REPLY_USAGE = ChatColor.RED + "/reply <id> to clear or /reply <id> <message> to reply";
+    public static final String PROVIDE_QUESTION = ChatColor.RED + "You must provide a question to be asked";
 
     // stores id->unanswered question
     protected final Map<Integer, Question> questions = Maps.newHashMap();
@@ -82,6 +83,11 @@ public class AdminHelp implements CommandExecutor, Listener {
 
         if (!(sender instanceof Player)) {
             sender.sendMessage(ONLY_PLAYER);
+            return true;
+        }
+
+        if (args.length == 0) {
+            sender.sendMessage(PROVIDE_QUESTION);
             return true;
         }
 
