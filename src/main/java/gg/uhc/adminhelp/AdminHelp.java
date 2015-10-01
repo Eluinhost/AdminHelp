@@ -26,12 +26,14 @@ public class AdminHelp implements CommandExecutor, Listener {
     public static final String NO_PERMISSION = ChatColor.RED + "You do not have permission to use this command";
     public static final String ONLY_PLAYER = ChatColor.RED + "This command can only be ran by a player";
     public static final String ADDED_MESSAGE = ChatColor.AQUA + "Message sent to the admins";
-    public static final String REPLY_NOTICE_FORMAT = ChatColor.translateAlternateColorCodes('&', "&8Question ID %d has been answered: %s");
+    public static final String REPLY_NOTICE_FORMAT = ChatColor.GRAY + "Question ID %d has been answered: %s";
+    public static final String DELETE_NOTICE_FORMAT = ChatColor.GRAY + "Question ID %d was deleted.";
     public static final String INVALID_ID = ChatColor.RED + "Invalid ID %s";
     public static final String REPLY_FORMAT = ChatColor.AQUA + "Admin replies: %s";
     public static final String WAITING_ON_LOGIN = ChatColor.AQUA + "Player not online, will send at next login";
     public static final String REPLY_USAGE = ChatColor.RED + "/reply <id> to clear or /reply <id> <message> to reply";
     public static final String PROVIDE_QUESTION = ChatColor.RED + "You must provide a question to be asked";
+    public static final String NONE_PENDING = ChatColor.AQUA + "There are no messages pending.";
 
     // stores id->unanswered question
     protected final Map<Integer, Question> questions = Maps.newHashMap();
@@ -63,7 +65,7 @@ public class AdminHelp implements CommandExecutor, Listener {
         }
 
         if (questions.size() == 0) {
-            sender.sendMessage("No questions are pending");
+            sender.sendMessage(NONE_PENDING);
             return true;
         }
 
@@ -131,9 +133,9 @@ public class AdminHelp implements CommandExecutor, Listener {
         args[0] = "";
         String reply = Joiner.on(" ").join(args);
 
-        sendToAdmins(String.format(REPLY_NOTICE_FORMAT, question.getId(), reply));
-
         if (reply.length() > 0) {
+            sendToAdmins(String.format(REPLY_NOTICE_FORMAT, question.getId(), reply));
+
             Player player = Bukkit.getPlayer(question.getUUID());
 
             String formatted = String.format(REPLY_FORMAT, reply);
@@ -144,6 +146,8 @@ public class AdminHelp implements CommandExecutor, Listener {
             } else {
                 player.sendMessage(formatted);
             }
+        } else {
+            sendToAdmins(String.format(DELETE_NOTICE_FORMAT, question.getId()));
         }
 
         return true;
